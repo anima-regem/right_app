@@ -1,57 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:right_app/Login.dart';
 import 'package:right_app/Profile.dart';
+import 'package:right_app/SignUp.dart';
 
-class SignUp extends StatefulWidget {
+class LogIn extends StatefulWidget {
   @override
-  _SignUpState createState() => _SignUpState();
+  _LogInState createState() => _LogInState();
 }
 
-class _SignUpState extends State<SignUp> {
+class _LogInState extends State<LogIn> {
   final _formKey = GlobalKey<FormState>();
-  final _fullNameController = TextEditingController();
-  final _phoneNumberController = TextEditingController();
-  final _verificationIdController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
   @override
   void dispose() {
-    _fullNameController.dispose();
-    _phoneNumberController.dispose();
-    _verificationIdController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
 
   Future<void> _createAccount(
-    String fullName,
-    String phoneNumber,
-    String verificationId,
     String email,
     String password,
   ) async {
-    print(
-        'Creating account with fullName: $fullName, phoneNumber: $phoneNumber, verificationId: $verificationId, email: $email, password: $password');
+    print('Creating account with fullName: email: $email, password: $password');
     try {
-      final credential =
-          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
-      final user = credential.user;
-      print('Successfully created account with uid: ${user!.uid}');
-      // Save user data to Firestore.
-      await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
-        'fullName': fullName,
-        'phoneNumber': phoneNumber,
-        'verificationId': verificationId,
-        'email': email,
-        'role': 'user'
-      });
       showAboutDialog(context: context, children: [
         Text('Account created successfully!'),
       ]);
@@ -74,7 +53,7 @@ class _SignUpState extends State<SignUp> {
       appBar: AppBar(
         backgroundColor: Colors.black,
         title: Text(
-          'Sign Up',
+          'Log In',
           style: TextStyle(color: Colors.white),
         ),
       ),
@@ -84,7 +63,8 @@ class _SignUpState extends State<SignUp> {
           child: Form(
             key: _formKey,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
                   'Create New Account',
@@ -96,50 +76,6 @@ class _SignUpState extends State<SignUp> {
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 24),
-                TextFormField(
-                  controller: _fullNameController,
-                  style: TextStyle(color: Colors.white),
-                  decoration: InputDecoration(
-                    labelText: 'Full Name',
-                    labelStyle: TextStyle(color: Colors.grey),
-                    filled: true,
-                    fillColor: Colors.white24,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                      borderSide: BorderSide.none,
-                    ),
-                  ),
-                ),
-                SizedBox(height: 16),
-                TextFormField(
-                  controller: _phoneNumberController,
-                  style: TextStyle(color: Colors.white),
-                  decoration: InputDecoration(
-                    labelText: 'Phone Number',
-                    labelStyle: TextStyle(color: Colors.grey),
-                    filled: true,
-                    fillColor: Colors.white24,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                      borderSide: BorderSide.none,
-                    ),
-                  ),
-                ),
-                SizedBox(height: 16),
-                TextFormField(
-                  controller: _verificationIdController,
-                  style: TextStyle(color: Colors.white),
-                  decoration: InputDecoration(
-                    labelText: 'Verification ID',
-                    labelStyle: TextStyle(color: Colors.grey),
-                    filled: true,
-                    fillColor: Colors.white24,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                      borderSide: BorderSide.none,
-                    ),
-                  ),
-                ),
                 SizedBox(height: 16),
                 TextFormField(
                   controller: _emailController,
@@ -177,9 +113,6 @@ class _SignUpState extends State<SignUp> {
                     if (_formKey.currentState!.validate()) {
                       // Process data.
                       _createAccount(
-                        _fullNameController.text,
-                        _phoneNumberController.text,
-                        _verificationIdController.text,
                         _emailController.text,
                         _passwordController.text,
                       );
@@ -194,7 +127,7 @@ class _SignUpState extends State<SignUp> {
                     ),
                   ),
                   child: Text(
-                    'SIGN UP',
+                    'LOG IN',
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -206,23 +139,22 @@ class _SignUpState extends State<SignUp> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Already have an account?",
+                      "New Here?",
                       style: TextStyle(color: Colors.white),
                     ),
                     TextButton(
                       onPressed: () {
                         Navigator.pushReplacement(context,
-                            MaterialPageRoute(builder: (context) => LogIn()));
+                            MaterialPageRoute(builder: (context) => SignUp()));
                       },
                       child: Text(
-                        "Login",
+                        "Sign Up",
                         style: TextStyle(
                             color: Colors.white, fontWeight: FontWeight.bold),
                       ),
                     ),
                   ],
                 ),
-                SizedBox(height: 24),
               ],
             ),
           ),

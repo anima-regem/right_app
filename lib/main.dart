@@ -1,10 +1,16 @@
 // ignore_for_file: unused_import
 
 import 'package:flutter/material.dart';
-import 'login.dart';
-import 'SignUpScreen.dart';
+import 'package:right_app/SignUpScreen.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:right_app/firebase_options.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(MyApp());
 }
 
