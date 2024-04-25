@@ -1,10 +1,8 @@
 // ignore_for_file: prefer_const_constructors, unused_import
 
 import 'package:flutter/material.dart';
-import 'package:right_app/LogInScreen.dart';
-import 'SignUpForm.dart';
-// ignore: duplicate_import
-import 'LogInScreen.dart'; // Import the login_screen.dart file
+import 'package:right_app/Login.dart';
+import 'package:right_app/SignUp.dart';
 
 class SignUpScreen extends StatefulWidget {
   @override
@@ -16,123 +14,87 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      body: ConstrainedBox(
-        constraints: BoxConstraints(
-          maxWidth: MediaQuery.of(context).size.width,
-          maxHeight: MediaQuery.of(context).size.height,
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios_new),
+          color: Colors.white,
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 40),
-              Padding(
-                padding: const EdgeInsets.only(left: 20),
-                child: Row(
-                  children: [
-                    IconButton(
-                      icon: Icon(Icons.arrow_back, color: Colors.white),
-                      onPressed: () {
-                        // Handle back arrow button press
-                      },
-                    ),
-                    Text(
-                      'Signup',
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 20),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+        title: Text(
+          'Sign Up',
+          style: TextStyle(color: Colors.white),
+        ),
+      ),
+      body: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Divider(),
+            ),
+            SizedBox(height: 24),
+            Text("Create New Account",
+                style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
+                textAlign: TextAlign.center),
+            Expanded(
                 child: Container(
-                  margin: const EdgeInsets.only(top: 20),
-                  padding: const EdgeInsets.all(16.0),
-                  decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      const Text(
-                        'Create New Account',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.white,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 16),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          _buildButton(
-                            text: 'USER',
-                            onPressed: () {
-                              // Handle "USER" button press
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => SignUpForm()),
-                              );
-                            },
-                            width: 150,
-                            height: 50,
-                            color: Colors.white, // White background for USER
-                          ),
-                          const SizedBox(width: 16),
-                          _buildButton(
-                            text: 'OFFICE',
-                            onPressed: () {
-                              // Handle "OFFICE" button press
-                            },
-                            width: 150,
-                            height: 50,
-                            color: Colors.white, // White background for OFFICE
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
+              alignment: Alignment.center,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  _buildButton(
+                      text: "User",
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => SignUp()),
+                        );
+                      },
+                      width: 120,
+                      height: 120,
+                      color: Colors.white),
+                  _buildButton(
+                      text: "Office",
+                      onPressed: () {},
+                      width: 120,
+                      height: 120,
+                      color: Colors.white)
+                ],
               ),
-              const SizedBox(height: 10),
-              Padding(
-                padding: const EdgeInsets.only(left: 20),
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.6,
-                  child: Container(
-                    height: 2,
-                    color: Colors.white,
-                  ),
+            )),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Already have an account?",
+                  style: TextStyle(color: Colors.white),
                 ),
-              ),
-              SizedBox(height: 16),
-              Center(
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => LoginScreen()),
-                    );
+                TextButton(
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => LogIn()));
                   },
                   child: Text(
-                    'Already Have an Account? Log In',
+                    "Login",
                     style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.white,
-                    ),
+                        color: Colors.white, fontWeight: FontWeight.bold),
                   ),
                 ),
-              ),
-              const SizedBox(height: 20),
-            ],
-          ),
+              ],
+            ),
+            SizedBox(height: 24),
+          ],
         ),
       ),
     );
@@ -148,8 +110,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        primary: color,
-        onPrimary: Colors.black, // Black text for all buttons
+        foregroundColor: Colors.black,
+        backgroundColor: color, // Black text for all buttons
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8.0),
         ),

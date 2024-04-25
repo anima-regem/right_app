@@ -1,13 +1,69 @@
 import 'package:flutter/material.dart';
-import 'LogInScreen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:right_app/Profile.dart';
+import 'package:right_app/SignUp.dart';
 
-class SignUpForm extends StatefulWidget {
+class SignUp extends StatefulWidget {
   @override
-  _SignUpFormState createState() => _SignUpFormState();
+  _SignUpState createState() => _SignUpState();
 }
 
-class _SignUpFormState extends State<SignUpForm> {
+class _SignUpState extends State<SignUp> {
   final _formKey = GlobalKey<FormState>();
+  final _fullNameController = TextEditingController();
+  final _phoneNumberController = TextEditingController();
+  final _verificationIDController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    _fullNameController.dispose();
+    _phoneNumberController.dispose();
+    _verificationIDController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _createAccount(
+    String fullName,
+    String phoneNumber,
+    String verificationID,
+    String email,
+    String password,
+  ) async {
+    try {
+      print(
+          'Creating account...with email: $email and password: $password and fullName: $fullName and phoneNumber: $phoneNumber and verificationID: $verificationID');
+      final credential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      final user = credential.user;
+      await FirebaseFirestore.instance.collection('users').doc(user!.uid).set({
+        'fullName': fullName,
+        'phoneNumber': phoneNumber,
+        'verificationID': verificationID,
+        'email': email,
+        'role': 'user',
+      });
+      showAboutDialog(context: context, children: [
+        Text('Account created successfully!'),
+      ]);
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+        builder: (context) => ProfileScreen(),
+      ));
+    } on FirebaseAuthException catch (e) {
+      print('Failed with error code: ${e.code}');
+      print(e.message);
+      showAboutDialog(context: context, children: [
+        Text('Failed to create account!'),
+      ]);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +82,8 @@ class _SignUpFormState extends State<SignUpForm> {
           child: Form(
             key: _formKey,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
                   'Create New Account',
@@ -39,6 +96,7 @@ class _SignUpFormState extends State<SignUpForm> {
                 ),
                 SizedBox(height: 24),
                 TextFormField(
+                  controller: _fullNameController,
                   style: TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                     labelText: 'Full Name',
@@ -53,6 +111,7 @@ class _SignUpFormState extends State<SignUpForm> {
                 ),
                 SizedBox(height: 16),
                 TextFormField(
+                  controller: _phoneNumberController,
                   style: TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                     labelText: 'Phone Number',
@@ -67,6 +126,7 @@ class _SignUpFormState extends State<SignUpForm> {
                 ),
                 SizedBox(height: 16),
                 TextFormField(
+                  controller: _verificationIDController,
                   style: TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                     labelText: 'Verification ID',
@@ -81,6 +141,7 @@ class _SignUpFormState extends State<SignUpForm> {
                 ),
                 SizedBox(height: 16),
                 TextFormField(
+                  controller: _emailController,
                   style: TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                     labelText: 'Email Address',
@@ -95,6 +156,7 @@ class _SignUpFormState extends State<SignUpForm> {
                 ),
                 SizedBox(height: 16),
                 TextFormField(
+                  controller: _passwordController,
                   style: TextStyle(color: Colors.white),
                   obscureText: true,
                   decoration: InputDecoration(
@@ -112,40 +174,52 @@ class _SignUpFormState extends State<SignUpForm> {
                 ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      // Handle sign up
+                      // Process data.
+                      _createAccount(
+                        _fullNameController.text,
+                        _phoneNumberController.text,
+                        _verificationIDController.text,
+                        _emailController.text,
+                        _passwordController.text,
+                      );
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.white,
-                    onPrimary: Colors.black,
+                    foregroundColor: Colors.black,
+                    backgroundColor: Colors.white,
                     minimumSize: Size(double.infinity, 48),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8.0),
                     ),
                   ),
                   child: Text(
-                    'SIGN UP',
+                    'LOG IN',
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => LoginScreen()),
-                    );
-                  },
-                  child: Text(
-                    'Already Have an Account? Log In',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
+                SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "New Here?",
+                      style: TextStyle(color: Colors.white),
                     ),
-                    textAlign: TextAlign.center,
-                  ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pushReplacement(context,
+                            MaterialPageRoute(builder: (context) => SignUp()));
+                      },
+                      child: Text(
+                        "Sign Up",
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
