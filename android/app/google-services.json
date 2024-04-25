@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1013156451050",
+    "project_id": "rightapp-c9459",
+    "storage_bucket": "rightapp-c9459.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1013156451050:android:b31d08fb187eb6b47d7d93",
+        "android_client_info": {
+          "package_name": "com.example.right_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDz9jb2tu18LkwOXdeJrnYVgviGpgCuDaE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
