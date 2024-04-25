@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'LogInScreen.dart';
 
-class SignUpScreen extends StatefulWidget {
+class SignUpForm extends StatefulWidget {
   @override
-  _SignUpScreenState createState() => _SignUpScreenState();
+  _SignUpFormState createState() => _SignUpFormState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
+class _SignUpFormState extends State<SignUpForm> {
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -130,14 +131,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                   ),
                 ),
-                SizedBox(height: 16),
-                Text(
-                  'Already Have an Account? Sign In',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => LoginScreen()),
+                    );
+                  },
+                  child: Text(
+                    'Already Have an Account? Log In',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
                 ),
               ],
             ),
