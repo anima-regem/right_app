@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:right_app/Profile.dart';
 import 'package:right_app/SignUp.dart';
+import 'package:right_app/Home.dart';
 
 class SignUp extends StatefulWidget {
   @override
@@ -54,7 +54,7 @@ class _SignUpState extends State<SignUp> {
         Text('Account created successfully!'),
       ]);
       Navigator.of(context).pushReplacement(MaterialPageRoute(
-        builder: (context) => ProfileScreen(),
+        builder: (context) => HomePage(),
       ));
     } on FirebaseAuthException catch (e) {
       print('Failed with error code: ${e.code}');
