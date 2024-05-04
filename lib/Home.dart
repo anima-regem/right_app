@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:right_app/AboutUs.dart';
 import 'package:right_app/Grievance.dart';
 import 'package:right_app/Profile.dart';
+import 'package:right_app/Status.dart';
 
 void main() {
   runApp(MyApp());
@@ -24,14 +25,24 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.home),
-            SizedBox(width: 8),
-            Text('The Right'),
-          ],
+        title: Center(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.home),
+              SizedBox(width: 8),
+              Text('The Right'),
+            ],
+          ),
         ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.notifications),
+            onPressed: () {
+              // Handle notification button press
+            },
+          ),
+        ],
       ),
       body: Center(
         child: Column(
@@ -53,9 +64,17 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
                 SizedBox(width: 16),
-                MenuButton(
-                  icon: Icons.check_circle,
-                  text: 'Status',
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => StatusPage()),
+                    );
+                  },
+                  child: MenuButton(
+                    icon: Icons.check_circle,
+                    text: 'Status',
+                  ),
                 ),
               ],
             ),
