@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart'; // Import the cloud_firestore package
 
 void main() {
   runApp(MyApp());
@@ -80,9 +81,45 @@ class _GrievancePageState extends State<GrievancePage> {
                 ),
               ),
             ),
+            SizedBox(height: 16.0),
+            ElevatedButton(
+              onPressed: () {
+                // Submit the grievance text to Firebase
+                _submitGrievance();
+              },
+              child: Text('Submit'),
+            ),
           ],
         ),
       ),
     );
+  }
+
+  void _submitGrievance() async {
+    final grievanceText = _textController.text.trim();
+    if (grievanceText.isNotEmpty) {
+      try {
+        // Add the grievance text to Firestore
+        await FirebaseFirestore.instance.collection('grievances').add({
+          'text': grievanceText,
+          'timestamp': FieldValue.serverTimestamp(),
+        });
+        // Clear the text field after successful submission
+        _textController.clear();
+        // Show a success message or perform any additional actions
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Grievance submitted successfully'),
+          ),
+        );
+      } catch (e) {
+        // Show an error message if submission fails
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to submit grievance'),
+          ),
+        );
+      }
+    }
   }
 }
