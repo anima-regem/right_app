@@ -1,7 +1,9 @@
 // ignore_for_file: prefer_const_constructors, unused_import
 
 import 'package:flutter/material.dart';
+import 'package:right_app/LogInScreen.dart';
 import 'package:right_app/Login.dart';
+import 'package:right_app/Officehome.dart';
 import 'package:right_app/Officesignup.dart';
 import 'package:right_app/SignUp.dart';
 
@@ -71,7 +73,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => OfficeSignUp()),
+                              builder: (context) => OfficeHomePage()),
                         );
                       },
                       width: 120,
@@ -90,7 +92,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 TextButton(
                   onPressed: () {
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => LogIn()));
+                        MaterialPageRoute(builder: (context) => LoginScreen()));
                   },
                   child: Text(
                     "Login",
