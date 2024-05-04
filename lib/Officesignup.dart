@@ -2,26 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:right_app/Login.dart';
-import 'package:right_app/SignUp.dart';
 import 'package:right_app/Home.dart';
 
-class SignUp extends StatefulWidget {
+class OfficeSignUp extends StatefulWidget {
   @override
-  _SignUpState createState() => _SignUpState();
+  _OfficeSignUpState createState() => _OfficeSignUpState();
 }
 
-class _SignUpState extends State<SignUp> {
+class _OfficeSignUpState extends State<OfficeSignUp> {
   final _formKey = GlobalKey<FormState>();
-  final _fullNameController = TextEditingController();
-  final _phoneNumberController = TextEditingController();
+  final _officeNameController = TextEditingController();
+  final _officeNumberController = TextEditingController();
   final _verificationIDController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
   @override
   void dispose() {
-    _fullNameController.dispose();
-    _phoneNumberController.dispose();
+    _officeNameController.dispose();
+    _officeNumberController.dispose();
     _verificationIDController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
@@ -29,30 +28,33 @@ class _SignUpState extends State<SignUp> {
   }
 
   Future<void> _createAccount(
-    String fullName,
-    String phoneNumber,
+    String officeName,
+    String officeNumber,
     String verificationID,
     String email,
     String password,
   ) async {
     try {
       print(
-          'Creating account...with email: $email and password: $password and fullName: $fullName and phoneNumber: $phoneNumber and verificationID: $verificationID');
+          'Creating account...with email: $email and password: $password and officeName: $officeName and officeNumber: $officeNumber and verificationID: $verificationID');
       final credential =
           await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
       final user = credential.user;
-      await FirebaseFirestore.instance.collection('users').doc(user!.uid).set({
-        'fullName': fullName,
-        'phoneNumber': phoneNumber,
+      await FirebaseFirestore.instance
+          .collection('offices')
+          .doc(user!.uid)
+          .set({
+        'officeName': officeName,
+        'officeNumber': officeNumber,
         'verificationID': verificationID,
         'email': email,
-        'role': 'user',
+        'role': 'office',
       });
       showAboutDialog(context: context, children: [
-        Text('Account created successfully!'),
+        Text('Office account created successfully!'),
       ]);
       Navigator.of(context).pushReplacement(MaterialPageRoute(
         builder: (context) => HomePage(),
@@ -61,7 +63,7 @@ class _SignUpState extends State<SignUp> {
       print('Failed with error code: ${e.code}');
       print(e.message);
       showAboutDialog(context: context, children: [
-        Text('Failed to create account!'),
+        Text('Failed to create office account!'),
       ]);
     }
   }
@@ -73,7 +75,7 @@ class _SignUpState extends State<SignUp> {
       appBar: AppBar(
         backgroundColor: Colors.black,
         title: Text(
-          'Sign Up',
+          'Office Sign Up',
           style: TextStyle(color: Colors.white),
         ),
       ),
@@ -87,7 +89,7 @@ class _SignUpState extends State<SignUp> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Create New Account',
+                  'Create New Office Account',
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
@@ -97,10 +99,10 @@ class _SignUpState extends State<SignUp> {
                 ),
                 SizedBox(height: 24),
                 TextFormField(
-                  controller: _fullNameController,
+                  controller: _officeNameController,
                   style: TextStyle(color: Colors.white),
                   decoration: InputDecoration(
-                    labelText: 'Full Name',
+                    labelText: 'Office Name',
                     labelStyle: TextStyle(color: Colors.grey),
                     filled: true,
                     fillColor: Colors.white24,
@@ -112,10 +114,10 @@ class _SignUpState extends State<SignUp> {
                 ),
                 SizedBox(height: 16),
                 TextFormField(
-                  controller: _phoneNumberController,
+                  controller: _officeNumberController,
                   style: TextStyle(color: Colors.white),
                   decoration: InputDecoration(
-                    labelText: 'Phone Number',
+                    labelText: 'Office Number',
                     labelStyle: TextStyle(color: Colors.grey),
                     filled: true,
                     fillColor: Colors.white24,
@@ -177,8 +179,8 @@ class _SignUpState extends State<SignUp> {
                     if (_formKey.currentState!.validate()) {
                       // Process data.
                       _createAccount(
-                        _fullNameController.text,
-                        _phoneNumberController.text,
+                        _officeNameController.text,
+                        _officeNumberController.text,
                         _verificationIDController.text,
                         _emailController.text,
                         _passwordController.text,

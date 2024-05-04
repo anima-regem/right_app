@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:right_app/Login.dart';
+import 'package:right_app/Officesignup.dart';
 import 'package:right_app/SignUp.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -66,7 +67,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       color: Colors.white),
                   _buildButton(
                       text: "Office",
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => OfficeSignUp()),
+                        );
+                      },
                       width: 120,
                       height: 120,
                       color: Colors.white)
