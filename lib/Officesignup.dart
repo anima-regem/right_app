@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:right_app/Login.dart';
-import 'package:right_app/Home.dart';
+import 'package:right_app/Officehome.dart';
 
 class OfficeSignUp extends StatefulWidget {
   @override
@@ -57,7 +57,7 @@ class _OfficeSignUpState extends State<OfficeSignUp> {
         Text('Office account created successfully!'),
       ]);
       Navigator.of(context).pushReplacement(MaterialPageRoute(
-        builder: (context) => HomePage(),
+        builder: (context) => OfficeHomePage(),
       ));
     } on FirebaseAuthException catch (e) {
       print('Failed with error code: ${e.code}');
