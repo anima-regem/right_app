@@ -33,7 +33,7 @@ class _LogInState extends State<LogIn> {
         password: password,
       );
       showAboutDialog(context: context, children: [
-        Text('Account created successfully!'),
+        Text('Loggedin successfully!'),
       ]);
       Navigator.of(context).pushReplacement(MaterialPageRoute(
         builder: (context) => HomePage(),
