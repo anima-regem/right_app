@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:right_app/AboutUs.dart';
 import 'package:right_app/Profile.dart';
+import 'package:right_app/Replies.dart';
+import 'package:right_app/submissions.dart';
 
 class OfficeHomePage extends StatefulWidget {
   @override
@@ -33,7 +35,11 @@ class _OfficeHomePageState extends State<OfficeHomePage> {
                   icon: Icons.list,
                   text: 'Submissions',
                   onPressed: () {
-                    // Navigate to Submissions page
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => SubmissionsPage()),
+                    );
                   },
                 ),
                 SizedBox(width: 16),
@@ -41,6 +47,8 @@ class _OfficeHomePageState extends State<OfficeHomePage> {
                   icon: Icons.reply,
                   text: 'Replies',
                   onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => RepliesPage()));
                     // Navigate to Replies page
                   },
                 ),
